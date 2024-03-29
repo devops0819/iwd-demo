@@ -1,1 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: iwd-demo-analysis
+  namespace: default
+spec:
+  metrics:
+    - name: requests-error-rate
+      provider:
+        prometheus:
+          query: |
+            sum(rate(http_requests_total{status!="200"}[5m])) / sum(rate(http_requests_total[5m]))
+  successCondition: result >= 0.1
 
